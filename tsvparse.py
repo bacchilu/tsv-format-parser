@@ -1,20 +1,31 @@
 from urlparse import urlparse
 import sys
+import os
+import glob
 
 
-def getEpuratedDomains(fileName):
+def getDomains(fileName):
     with open(fileName, 'r') as fp:
         lines = (l for i, l in enumerate(fp) if i > 1)
         urls = (l.split('\t')[1][1:-1] for l in lines if l.split('\t')[1])
         domains = (urlparse(url).netloc for url in urls)
-        return list(set(domains))
+        return set(domains)
+
+
+def prettyPrint(fName):
+    print '=============' + fName + '============='
+    for e in getDomains(fName):
+        print e
 
 
 if __name__ == '__main__':
     try:
-        fName = sys.argv[1]
+        p = sys.argv[1]
     except IndexError:
-        print 'usage: python tsvparse.py <file>'
+        print 'usage: python tsvparse.py <filepath or directorypath>'
         sys.exit(1)
-    for d in getEpuratedDomains(fName):
-        print d
+    if os.path.isfile(p):
+        prettyPrint(p)
+    if os.path.isdir(p):
+        for fName in glob.iglob(os.path.join(p, '*.tsv')):
+            prettyPrint(fName)
