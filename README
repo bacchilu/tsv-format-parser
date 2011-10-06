@@ -1,0 +1,7 @@
+It is possible to parse a single file in this way:
+
+$ python tsvparse.py example.py
+
+Or a full directory in this way:
+
+$ python tsvparse.py ./
