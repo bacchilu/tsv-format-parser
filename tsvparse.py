@@ -12,9 +12,9 @@ def getDomains(fileName):
         return set(domains)
 
 
-def prettyPrint(fName):
+def prettyPrint(fName, values):
     print '=============' + fName + '============='
-    for e in getDomains(fName):
+    for e in values:
         print e
 
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         print 'usage: python tsvparse.py <filepath or directorypath>'
         sys.exit(1)
     if os.path.isfile(p):
-        prettyPrint(p)
+        prettyPrint(p, getDomains(p))
     if os.path.isdir(p):
         for fName in glob.iglob(os.path.join(p, '*.tsv')):
-            prettyPrint(fName)
+            prettyPrint(fName, getDomains(fName))
